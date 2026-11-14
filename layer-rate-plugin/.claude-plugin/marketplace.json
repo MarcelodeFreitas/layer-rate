@@ -1,0 +1,14 @@
+{
+  "name": "layer-rate-local",
+  "owner": {
+    "name": "LayerRate contributors"
+  },
+  "description": "Local marketplace for the LayerRate 3D print pricing plugin.",
+  "plugins": [
+    {
+      "name": "layer-rate",
+      "source": "./",
+      "description": "Price FDM 3D print jobs with the LayerRate calculator, using a bundled CLI that needs no other install."
+    }
+  ]
+}

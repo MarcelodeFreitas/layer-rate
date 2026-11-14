@@ -1,0 +1,56 @@
+{
+  "name": "layer-rate",
+  "version": "0.3.1",
+  "description": "Price FDM 3D print jobs with the LayerRate calculator: a transparent quote and cost breakdown from grams, print time and your shop costs.",
+  "keywords": ["3d-printing", "pricing", "quotes", "fdm"],
+  "license": "MIT",
+  "author": {
+    "name": "LayerRate contributors"
+  },
+  "userConfig": {
+    "electricity_cost_per_kwh": {
+      "type": "number",
+      "title": "Electricity cost per kWh",
+      "description": "Your electricity price per kilowatt-hour, in your currency."
+    },
+    "labor_cost_per_hour": {
+      "type": "number",
+      "title": "Labor cost per hour",
+      "description": "What your time is worth per hour, in your currency."
+    },
+    "fail_ratio_percent": {
+      "type": "number",
+      "title": "Failed-job surcharge (%)",
+      "description": "Surcharge on the failed-job cost as a whole percent, from 0 to 100. This is a surcharge, not a failure probability."
+    },
+    "pricing_mode": {
+      "type": "string",
+      "title": "Pricing mode",
+      "description": "markup adds a percentage on top of cost. margin is the share of the sale price kept as profit.",
+      "default": "markup",
+      "options": ["markup", "margin"]
+    },
+    "pricing_percent": {
+      "type": "number",
+      "title": "Markup or margin (%)",
+      "description": "The markup or margin percent for your prices. Margin must be below 100."
+    },
+    "tax_percent": {
+      "type": "number",
+      "title": "Tax (%)",
+      "description": "Tax rate added to prices as a whole percent, for example 23 for 23% IVA. Use 0 if your prices exclude tax.",
+      "default": 0
+    },
+    "material_costs_per_kg": {
+      "type": "string",
+      "title": "Material costs per kg",
+      "description": "Filament price per kilogram, one entry per material, for example PLA=20, PETG=22, ASA=25."
+    },
+    "currency": {
+      "type": "string",
+      "title": "Currency",
+      "description": "Currency label used in quote output, for example EUR.",
+      "default": "EUR"
+    }
+  }
+}

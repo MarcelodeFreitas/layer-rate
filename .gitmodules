@@ -1,0 +1,3 @@
+[submodule "layer-rate-core"]
+	path = layer-rate-core
+	url = https://github.com/MarcelodeFreitas/layer-rate-core.git

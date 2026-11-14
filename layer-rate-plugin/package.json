@@ -1,0 +1,15 @@
+{
+  "name": "layer-rate-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rolldown ../layer-rate-cli/dist/index.js --file cli/layer-rate.mjs --format esm --platform node",
+    "test": "npm run build && vitest run"
+  },
+  "devDependencies": {
+    "layer-rate-core": "^0.1.0",
+    "rolldown": "^1.0.1",
+    "vitest": "^4.0.8"
+  }
+}

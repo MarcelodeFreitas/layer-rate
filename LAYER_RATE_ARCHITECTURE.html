@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LayerRate Architecture</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --text: #172033;
+        --muted: #667085;
+        --line: #d8deea;
+        --blue: #2563eb;
+        --blue-soft: #eaf1ff;
+        --green: #15803d;
+        --green-soft: #eaf7ef;
+        --orange: #ea580c;
+        --orange-soft: #fff1e7;
+        --violet: #7c3aed;
+        --violet-soft: #f2ecff;
+        --shadow: 0 14px 35px rgba(16, 24, 40, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 56px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 34px;
+        line-height: 1.15;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin-top: 34px;
+        font-size: 22px;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        font-size: 16px;
+        letter-spacing: 0;
+      }
+
+      .intro {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
+      .subtitle {
+        max-width: 760px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .rule {
+        display: inline-flex;
+        width: fit-content;
+        margin-top: 6px;
+        padding: 10px 14px;
+        border: 1px solid #bed0ff;
+        border-radius: 8px;
+        background: var(--blue-soft);
+        color: #173b8f;
+        font-weight: 650;
+      }
+
+      .panel {
+        margin-top: 18px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .architecture {
+        display: grid;
+        grid-template-columns: 1fr 88px 1fr 88px 1fr;
+        gap: 0;
+        align-items: center;
+        min-height: 350px;
+      }
+
+      .stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .node {
+        min-height: 92px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .node strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 15px;
+      }
+
+      .node span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .node.actor {
+        border-color: #c6d2e4;
+        background: #f9fbff;
+      }
+
+      .node.surface.cli {
+        border-color: #bfdbfe;
+        background: var(--blue-soft);
+      }
+
+      .node.surface.plugin {
+        border-color: #ddd6fe;
+        background: var(--violet-soft);
+      }
+
+      .node.surface.web {
+        border-color: #fed7aa;
+        background: var(--orange-soft);
+      }
+
+      .node.core {
+        min-height: 156px;
+        border-color: #86efac;
+        background: var(--green-soft);
+      }
+
+      .arrow-column {
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+      }
+
+      .arrow {
+        color: #7a8599;
+        font-size: 28px;
+        font-weight: 700;
+      }
+
+      .core-wrap {
+        display: grid;
+        gap: 14px;
+      }
+
+      .db {
+        border-color: #cbd5e1;
+        background: #f8fafc;
+      }
+
+      .component-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 16px;
+      }
+
+      .component {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .component ul {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+        align-items: stretch;
+      }
+
+      .step {
+        position: relative;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .step:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: -12px;
+        width: 12px;
+        height: 1px;
+        background: var(--line);
+      }
+
+      .step-number {
+        display: inline-grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        margin-bottom: 10px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      code {
+        padding: 2px 5px;
+        border-radius: 5px;
+        background: #eef2f7;
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 0.92em;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 16px 0 0;
+        padding: 16px;
+        border-radius: 8px;
+        background: #111827;
+        color: #f9fafb;
+      }
+
+      .boundary-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 18px;
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .boundary-list li {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      @media (max-width: 900px) {
+        .architecture,
+        .component-grid,
+        .flow,
+        .boundary-list {
+          grid-template-columns: 1fr;
+        }
+
+        .arrow-column {
+          display: none;
+        }
+
+        .step:not(:last-child)::after {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="intro">
+        <h1>LayerRate Architecture</h1>
+        <p class="subtitle">
+          LayerRate is organized around one pricing source of truth. Product
+          surfaces collect input, call the core engine, and format or save the
+          result.
+        </p>
+        <p class="rule">
+          Rule: pricing math lives only in <code>layer-rate-core</code>.
+        </p>
+      </section>
+
+      <section class="panel" aria-labelledby="visual-architecture">
+        <h2 id="visual-architecture">Visual Architecture</h2>
+        <div class="architecture">
+          <div class="stack">
+            <div class="node actor">
+              <strong>Terminal User</strong>
+              <span>Runs local commands and reads terminal output.</span>
+            </div>
+            <div class="node actor">
+              <strong>AI Assistant</strong>
+              <span>Runs the layer-rate:quote skill in Claude Code.</span>
+            </div>
+            <div class="node actor">
+              <strong>Browser User</strong>
+              <span>Uses forms, saved presets, charts, PDFs, and sharing.</span>
+            </div>
+          </div>
+
+          <div class="arrow-column" aria-hidden="true">
+            <div class="arrow">&rarr;</div>
+            <div class="arrow">&rarr;</div>
+            <div class="arrow">&rarr;</div>
+          </div>
+
+          <div class="stack">
+            <div class="node surface cli">
+              <strong>layer-rate-cli</strong>
+              <span>JSON files, flags, tables, terminal workflows.</span>
+            </div>
+            <div class="node surface plugin">
+              <strong>layer-rate-plugin</strong>
+              <span>Skill + bundled CLI, no install.</span>
+            </div>
+            <div class="node surface web">
+              <strong>layer-rate-web</strong>
+              <span>Accounts, saved defaults, quote UI, charts, PDFs.</span>
+            </div>
+          </div>
+
+          <div class="arrow-column" aria-hidden="true">
+            <div class="arrow">&rarr;</div>
+            <div class="arrow">&rarr;</div>
+            <div class="arrow">&rarr;</div>
+          </div>
+
+          <div class="core-wrap">
+            <div class="node core">
+              <strong>layer-rate-core</strong>
+              <span>TypeScript pricing engine. Owns formulas, validation, unit normalization, fees, tax, markup, margin, and quote breakdowns.</span>
+            </div>
+            <div class="node db">
+              <strong>Website database</strong>
+              <span>Only the web app stores users, printers, materials, quotes, and customer metadata.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="components">
+        <h2 id="components">Components And Stack</h2>
+        <div class="component-grid">
+          <article class="component">
+            <h3>Core</h3>
+            <ul>
+              <li>TypeScript package</li>
+              <li>Node-compatible ESM</li>
+              <li>Vitest tests</li>
+              <li>No UI or database</li>
+            </ul>
+          </article>
+          <article class="component">
+            <h3>CLI</h3>
+            <ul>
+              <li>TypeScript + Node.js</li>
+              <li><code>commander</code> or <code>yargs</code></li>
+              <li>Reads JSON input</li>
+              <li>Prints table or JSON output</li>
+            </ul>
+          </article>
+          <article class="component">
+            <h3>Plugin</h3>
+            <ul>
+              <li>Claude Code skill</li>
+              <li>Single-file bundled CLI</li>
+              <li>Shop settings via userConfig</li>
+              <li>Rounded breakdown</li>
+            </ul>
+          </article>
+          <article class="component">
+            <h3>Website</h3>
+            <ul>
+              <li>Next.js + React</li>
+              <li>Tailwind CSS</li>
+              <li>PostgreSQL</li>
+              <li>Prisma or Drizzle</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="data-flow">
+        <h2 id="data-flow">Data Flow</h2>
+        <div class="flow">
+          <div class="step">
+            <span class="step-number">1</span>
+            <h3>Collect</h3>
+            <p>CLI, plugin, or website receives printer, material, labor, fee, tax, and quantity inputs.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <h3>Build Input</h3>
+            <p>The surface creates a valid <code>LayerRateQuoteInput</code>.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <h3>Calculate</h3>
+            <p><code>calculateQuote(input)</code> normalizes units and calculates the quote.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <h3>Return</h3>
+            <p>Core returns raw decimals and detailed breakdowns.</p>
+          </div>
+          <div class="step">
+            <span class="step-number">5</span>
+            <h3>Present</h3>
+            <p>The surface rounds, formats, charts, saves, exports, or explains the result.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="api-boundary">
+        <h2 id="api-boundary">API Boundary</h2>
+        <pre><code>import { calculateQuote } from "layer-rate-core";
+
+const result = calculateQuote(input);</code></pre>
+        <ul class="boundary-list">
+          <li><strong>Core owns:</strong> pricing math, validation, unit normalization, fees, tax, and breakdown values.</li>
+          <li><strong>CLI owns:</strong> terminal commands, JSON files, terminal formatting, and local workflows.</li>
+          <li><strong>Plugin owns:</strong> skill instructions, shop settings, and the bundled CLI build.</li>
+          <li><strong>Website owns:</strong> users, saved presets, database, charts, rounding, currency display, PDFs, ecommerce, and sharing.</li>
+        </ul>
+      </section>
+
+      <section class="panel" aria-labelledby="organization">
+        <h2 id="organization">Recommended Organization</h2>
+        <pre><code>b3dp/
+  PROJECT_IDEAS.md
+  LAYER_RATE_ARCHITECTURE.md
+  LAYER_RATE_ARCHITECTURE.html
+  layer-rate-core/
+  layer-rate-cli/
+  layer-rate-plugin/
+  layer-rate-web/</code></pre>
+      </section>
+    </main>
+  </body>
+</html>

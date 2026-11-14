@@ -1,0 +1,14 @@
+{
+  "name": "layer-rate-workspace",
+  "private": true,
+  "workspaces": [
+    "layer-rate-core",
+    "layer-rate-cli",
+    "layer-rate-plugin"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "typecheck": "npm run build --workspace layer-rate-core && npm run typecheck --workspaces --if-present"
+  }
+}

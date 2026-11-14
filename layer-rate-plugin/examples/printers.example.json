@@ -1,0 +1,18 @@
+{
+  "printers": {
+    "Ender 3": {
+      "printerPurchasePrice": 250,
+      "printerPowerWatts": 200,
+      "printerLifetimeYears": 5,
+      "typicalUsageHoursPerDay": 4,
+      "repairRatioPercent": 20
+    },
+    "Bambu A1": {
+      "printerPurchasePrice": 400,
+      "printerPowerWatts": 150,
+      "printerLifetimeYears": 6,
+      "typicalUsageHoursPerDay": 6,
+      "repairRatioPercent": 10
+    }
+  }
+}
