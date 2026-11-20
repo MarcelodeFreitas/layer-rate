@@ -138,6 +138,19 @@ export function Calculator() {
                     </span>
                   </label>
                   <label>
+                    Days{" "}
+                    <span className="input-with-unit">
+                      <input
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={last.days || ""}
+                        onChange={(e) => setLast({ days: num(e.target.value) })}
+                      />
+                      <span className="unit">d</span>
+                    </span>
+                  </label>
+                  <label>
                     Hours{" "}
                     <span className="input-with-unit">
                       <input
@@ -245,7 +258,7 @@ export function Calculator() {
                 Total for {last.quantity} job(s):{" "}
                 <span className="mono">{formatMoney(shown.customerPriceAllJobs, currency)}</span>
                 {" · "}Print time:{" "}
-                <span className="mono">{formatDuration(last.hours, last.minutes)}</span>
+                <span className="mono">{formatDuration(last.hours, last.minutes, last.days)}</span>
               </p>
               <hr className="divider" />
               <h2>Where the price goes</h2>

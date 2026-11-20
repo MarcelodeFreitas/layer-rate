@@ -50,6 +50,7 @@ const last: LastInputs = {
   printerId: "x",
   filamentId: "x",
   grams: 22,
+  days: 0,
   hours: 1,
   minutes: 50,
   quantity: 1,
@@ -63,6 +64,10 @@ const last: LastInputs = {
 describe("buildQuoteInput", () => {
   it("matches the example JSON", () => {
     expect(buildQuoteInput(printer, filament, settings, last)).toEqual(example);
+  });
+  it("folds days into print hours", () => {
+    const input = buildQuoteInput(printer, filament, settings, { ...last, days: 2 });
+    expect(input.printTime).toEqual({ hours: 49, minutes: 50 });
   });
 });
 
@@ -102,6 +107,9 @@ describe("runQuote", () => {
 describe("formatDuration", () => {
   it("formats hours and minutes", () => {
     expect(formatDuration(1, 50)).toBe("1 h 50 min");
+  });
+  it("formats days, hours and minutes", () => {
+    expect(formatDuration(3, 10, 1)).toBe("1 d 3 h 10 min");
   });
   it("formats minutes only", () => {
     expect(formatDuration(0, 5)).toBe("5 min");
