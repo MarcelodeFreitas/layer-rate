@@ -239,7 +239,7 @@ describe("layer-rate CLI", () => {
     ) as { private: boolean; workspaces: string[] };
 
     expect(packageJson.private).toBe(true);
-    expect(packageJson.workspaces).toEqual(["layer-rate-core", "layer-rate-cli", "layer-rate-plugin"]);
+    expect(packageJson.workspaces).toEqual(["layer-rate-core", "layer-rate-cli", "layer-rate-plugin", "layer-rate-web"]);
   });
 
   it("missing file exits nonzero", async () => {
