@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { addDuration, dayDiff, isSameDay, monthCells } from "../lib/time";
+import { formatDuration } from "../lib/quote";
 
 const weekdays = Array.from({ length: 7 }, (_, i) =>
   // 1 Jan 2024 was a Monday, so this gives Mon..Sun in the user's locale.
@@ -23,7 +24,6 @@ export function TimeCalculator() {
   };
 
   const end = addDuration(start, days * 24 + hours, minutes);
-  const durationLabel = [days && `${days} d`, hours && `${hours} h`, minutes && `${minutes} min`].filter(Boolean).join(" ") || "0 min";
   const nextDays = dayDiff(start, end);
 
   const pickDay = (day: Date) =>
@@ -83,7 +83,7 @@ export function TimeCalculator() {
               <label>
                 Start time <input type="time" value={`${pad(start.getHours())}:${pad(start.getMinutes())}`} onChange={(e) => pickTime(e.target.value)} />
               </label>
-              <div className="form-actions">
+              <div className="form-actions now-action">
                 <button type="button" className="secondary" onClick={goNow}>
                   Now
                 </button>
@@ -142,7 +142,7 @@ export function TimeCalculator() {
           <hr className="divider" />
           <p className="result-summary">
             Starts {fmtDate(start)} at {fmtTime(start)}
-            {" · "}Print time: <span className="mono">{durationLabel}</span>
+            {" · "}Print time: <span className="mono">{formatDuration(hours, minutes, days)}</span>
           </p>
         </div>
       </div>

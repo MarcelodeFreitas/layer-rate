@@ -24,7 +24,7 @@ export function buildQuoteInput(
         costPer: { value: filament.costPerKg, unit: "kg" },
       },
     ],
-    printTime: { hours: last.hours, minutes: last.minutes },
+    printTime: { hours: last.days * 24 + last.hours, minutes: last.minutes },
     printerPurchasePrice: printer.printerPurchasePrice,
     printerPowerWatts: printer.printerPowerWatts,
     printerLifetimeYears: printer.printerLifetimeYears,
@@ -85,9 +85,7 @@ export function formatMoney(value: number, currency: string): string {
   }).format(value);
 }
 
-export function formatDuration(hours: number, minutes: number): string {
-  if (hours > 0 && minutes > 0) return `${hours} h ${minutes} min`;
-  if (hours > 0) return `${hours} h`;
-  if (minutes > 0) return `${minutes} min`;
-  return "0 min";
+export function formatDuration(hours: number, minutes: number, days = 0): string {
+  const parts = [days > 0 && `${days} d`, hours > 0 && `${hours} h`, minutes > 0 && `${minutes} min`].filter(Boolean);
+  return parts.length ? parts.join(" ") : "0 min";
 }

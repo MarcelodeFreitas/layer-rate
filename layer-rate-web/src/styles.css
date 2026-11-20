@@ -290,6 +290,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .edit-form { margin-top: var(--space-4); }
 .empty-state { color: var(--ink-soft); }
 .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-3); }
+.field-grid .now-action { margin-top: 0; align-self: end; }
 .action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
 
 details { margin-top: var(--space-3); }
