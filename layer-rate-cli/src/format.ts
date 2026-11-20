@@ -8,7 +8,8 @@ export function formatQuoteTable(result: LayerRateQuoteResult): string {
     row("Per job customer price", result.perJobCustomerPrice),
     row("Customer price (all jobs)", result.customerPriceAllJobs),
     row("Base customer price", result.baseCustomerPriceAllJobs),
-    row("Production cost (all jobs)", result.productionCostAllJobs),
+    row("Total cost per job", result.totalCostPerJob),
+    row("Total cost (all jobs)", result.productionCostAllJobs),
     row("Seller receives", result.sellerReceivesAllJobs),
     row("Total profit", result.totalProfitAllJobs),
     row("Recoverable fees", result.recoverableFees),
@@ -16,10 +17,10 @@ export function formatQuoteTable(result: LayerRateQuoteResult): string {
     row("Tax", result.tax),
     "",
     "Per-job breakdown",
-    ...breakdownRows(result.perJob),
+    ...breakdownRows(result.perJob, result.totalCostPerJob),
     "",
     "All-jobs breakdown",
-    ...breakdownRows(result.allJobs),
+    ...breakdownRows(result.allJobs, result.productionCostAllJobs),
     "",
     "Materials",
     ...result.materials.map((material, index) => {
@@ -43,7 +44,7 @@ export function formatQuoteTable(result: LayerRateQuoteResult): string {
   return lines.join("\n");
 }
 
-function breakdownRows(breakdown: QuoteCostBreakdown): string[] {
+function breakdownRows(breakdown: QuoteCostBreakdown, total: number): string[] {
   return [
     row("Material", breakdown.material),
     row("Printer power", breakdown.printerPower),
@@ -55,6 +56,7 @@ function breakdownRows(breakdown: QuoteCostBreakdown): string[] {
     row("Design", breakdown.design),
     row("Setup", breakdown.setup),
     row("Components", breakdown.components),
+    row("Total cost", total),
   ];
 }
 

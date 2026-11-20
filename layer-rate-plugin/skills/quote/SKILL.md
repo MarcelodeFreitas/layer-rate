@@ -150,8 +150,8 @@ Show:
 - The printer used, and the preset if one was loaded.
 - **Inputs used:** every input field, including the ones left at a default. Mark each default as "(default)". That covers quantity, each material's grams and price per kg, print time, setup, operations and post-processing time, design and component cost, fees (or "none"), electricity per kWh, labor per hour, failed-job surcharge, printer price, power, lifetime, hours per day, repair reserve, pricing mode and percent, and tax.
 - Price per unit, and total customer price for all jobs.
-- Production cost, profit and tax.
-- **Cost breakdown:** a table of every `result.perJob` line, including zero lines. Each row has the euro amount and its share of production cost in percent, to one decimal. The shares should add up to 100.
+- Total cost (`result.totalCostPerJob`), profit and tax.
+- **Cost breakdown:** a table of every `result.perJob` line, including zero lines, ending with a **Total cost** row equal to `result.totalCostPerJob`. Each row has the euro amount and its share of total cost in percent, to one decimal. The shares should add up to 100. The rounded euro amounts of the cost lines should add up to the Total cost row. A difference of 0.01 is rounding, because the total is not rounded line by line; say so. A bigger difference is a bug: say so instead of presenting the table.
 - For a what-if, the markup and margin next to the price.
 - One sentence naming the two largest cost lines.
 

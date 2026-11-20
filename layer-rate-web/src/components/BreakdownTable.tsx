@@ -16,7 +16,7 @@ export function BreakdownTable(props: { result: LayerRateQuoteResult; currency: 
     { label: "Design", perJob: result.perJob.design, allJobs: result.allJobs.design },
     { label: "Components", perJob: result.perJob.components, allJobs: result.allJobs.components },
     { label: "Failed prints", perJob: result.perJob.failedJobSurcharge, allJobs: result.allJobs.failedJobSurcharge },
-    { label: "Production cost", perJob: result.productionCostAllJobs / q, allJobs: result.productionCostAllJobs, bold: true },
+    { label: "Total cost", perJob: result.totalCostPerJob, allJobs: result.productionCostAllJobs, bold: true },
     { label: "Profit", perJob: result.totalProfitAllJobs / q, allJobs: result.totalProfitAllJobs, bold: true },
     { label: "Tax", perJob: result.tax / q, allJobs: result.tax, bold: true },
     { label: "Customer price", perJob: result.perJobCustomerPrice, allJobs: result.customerPriceAllJobs, bold: true },
