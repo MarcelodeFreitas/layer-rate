@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { addDuration, dayDiff, isSameDay, monthCells } from "../lib/time";
-import { formatDuration } from "../lib/quote";
 
 const weekdays = Array.from({ length: 7 }, (_, i) =>
   // 1 Jan 2024 was a Monday, so this gives Mon..Sun in the user's locale.
@@ -14,6 +13,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export function TimeCalculator() {
   const [start, setStart] = useState(() => new Date());
   const [view, setView] = useState(() => new Date());
+  const [days, setDays] = useState(0);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
 
@@ -22,7 +22,8 @@ export function TimeCalculator() {
     return Number.isFinite(n) && n > 0 ? n : 0;
   };
 
-  const end = addDuration(start, hours, minutes);
+  const end = addDuration(start, days * 24 + hours, minutes);
+  const durationLabel = [days && `${days} d`, hours && `${hours} h`, minutes && `${minutes} min`].filter(Boolean).join(" ") || "0 min";
   const nextDays = dayDiff(start, end);
 
   const pickDay = (day: Date) =>
@@ -53,6 +54,13 @@ export function TimeCalculator() {
           <section className="card">
             <h2>Print time</h2>
             <div className="field-grid">
+              <label>
+                Days{" "}
+                <span className="input-with-unit">
+                  <input type="number" min="0" step="1" value={days || ""} onChange={(e) => setDays(num(e.target.value))} />
+                  <span className="unit">d</span>
+                </span>
+              </label>
               <label>
                 Hours{" "}
                 <span className="input-with-unit">
@@ -134,7 +142,7 @@ export function TimeCalculator() {
           <hr className="divider" />
           <p className="result-summary">
             Starts {fmtDate(start)} at {fmtTime(start)}
-            {" · "}Print time: <span className="mono">{formatDuration(hours, minutes)}</span>
+            {" · "}Print time: <span className="mono">{durationLabel}</span>
           </p>
         </div>
       </div>
