@@ -4,7 +4,8 @@
   "workspaces": [
     "layer-rate-core",
     "layer-rate-cli",
-    "layer-rate-plugin"
+    "layer-rate-plugin",
+    "layer-rate-web"
   ],
   "scripts": {
     "build": "npm run build --workspaces",
