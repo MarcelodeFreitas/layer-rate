@@ -1,7 +1,27 @@
 import { describe, it, expect } from "vitest";
 import { buildQuoteInput, runQuote, priceSegments, formatMoney, formatDuration } from "../src/lib/quote";
 import type { Printer, Filament, Settings, LastInputs } from "../src/lib/schema";
-import example from "../../layer-rate-cli/quote.example.json";
+
+// Expected QuoteInput for the fixtures above (was a gitignored CLI JSON file, missing in CI).
+const example = {
+  designCost: 0,
+  materials: [{ name: "PLA", amount: { value: 22, unit: "g" }, costPer: { value: 15, unit: "kg" } }],
+  printTime: { hours: 1, minutes: 50 },
+  printerPurchasePrice: 1000,
+  printerPowerWatts: 350,
+  electricityCostPerKwh: 0.2,
+  printerLifetimeYears: 5,
+  typicalUsageHoursPerDay: 3,
+  repairRatioPercent: 20,
+  laborCostPerHour: 10,
+  setupTime: { minutes: 1 },
+  operationsTime: { minutes: 1 },
+  postProcessingTime: { minutes: 1 },
+  failRatioPercent: 20,
+  componentCost: 0,
+  pricing: { mode: "markup", percent: 223 },
+  quantity: 1,
+};
 
 const printer: Printer = {
   id: "x",
